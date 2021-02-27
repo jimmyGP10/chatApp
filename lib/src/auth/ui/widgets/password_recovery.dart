@@ -15,7 +15,7 @@ class _PasswordRecoveryState extends State<PasswordRecovery> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        child: Text('¿Olvidaste la contraseña?',
+        child: Text('Forgot your password?',
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w700)),
         onTap: () {
@@ -37,9 +37,9 @@ class _PasswordRecoveryState extends State<PasswordRecovery> {
                       typeInput: null,
                       txtTitle: null,
                       txtContentInput:
-                          "No hay ningún correo para realizar el proceso de cambio de contraseña.",
+                          "There is no email to perform the password change process.",
                       txtPrimaryButton: null,
-                      txtSecondaryButton: 'Entendido',
+                      txtSecondaryButton: 'Ok',
                       primaryButton: null,
                       secondaryButton: hideAlertDialog);
                 } else {
@@ -51,9 +51,9 @@ class _PasswordRecoveryState extends State<PasswordRecovery> {
                         typeInput: null,
                         txtTitle: null,
                         txtContentInput:
-                            "No hay ningún correo para realizar el proceso de cambio de contraseña.",
+                            "There is no email to perform the password change process.",
                         txtPrimaryButton: null,
-                        txtSecondaryButton: 'Entendido',
+                        txtSecondaryButton: 'Ok',
                         primaryButton: null,
                         secondaryButton: hideAlertDialog);
                   } else {
@@ -64,9 +64,9 @@ class _PasswordRecoveryState extends State<PasswordRecovery> {
                         typeInput: null,
                         txtTitle: null,
                         txtContentInput:
-                            "Se enviara un correo a $email para realizar el proceso de cambio de contraseña.",
-                        txtPrimaryButton: 'Enviar',
-                        txtSecondaryButton: 'Cancelar',
+                            "An email will be sent to $email to carry out the password change process.",
+                        txtPrimaryButton: 'Send',
+                        txtSecondaryButton: 'Cancel',
                         primaryButton: sendRecoveryPassword,
                         secondaryButton: hideAlertDialog);
                   }

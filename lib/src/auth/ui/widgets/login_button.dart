@@ -30,7 +30,7 @@ class LoginButton extends StatelessWidget {
                     data['email'] == '' ||
                     data['password'] == null ||
                     data['password'] == '') {
-                  showToast('¡Los campos con (*) son obligatorios!', context,
+                  showToast('The fields with (*) are required!', context,
                       duration: Toast.LENGTH_LONG, gravity: Toast.CENTER);
                 } else {
                   var emailValidation = validateEmail(data['email']);
@@ -47,7 +47,7 @@ class LoginButton extends StatelessWidget {
                   width: double.infinity,
                   height: 50,
                   child: Center(
-                      child: Text('Ingresar',
+                      child: Text('LogIn',
                           style:
                               TextStyle(color: Colors.white, fontSize: 17)))));
         });
@@ -59,21 +59,21 @@ class LoginButton extends StatelessWidget {
       AuthResult result =
           await authBloc.signInWithEmailAndPassword(email, password);
       if (result.user.uid != null) {
-        var response = await http
-            .get(Uri.encodeFull('$url/users/ByUid/${result.user.uid}'));
-        if (response.statusCode == 200) {
-          var jsonResponse = convert.jsonDecode(response.body);
-          print(jsonResponse);
-          storage.setItem('userAuth', jsonResponse);
-          Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => SessionHandler()),
-              (Route<dynamic> route) => false);
-          authBloc.setIsLoading(false);
-        } else {
-          print('Request failed with status: ${response.statusCode}.');
-          authBloc.setIsLoading(false);
-        }
+        // var response = await http
+        //     .get(Uri.encodeFull('$url/users/ByUid/${result.user.uid}'));
+        // if (response.statusCode == 200) {
+        // var jsonResponse = convert.jsonDecode(response.body);
+        // print(jsonResponse);
+        // storage.setItem('userAuth', jsonResponse);
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => SessionHandler()),
+            (Route<dynamic> route) => false);
+        authBloc.setIsLoading(false);
+        // } else {
+        //   print('Request failed with status: ${response.statusCode}.');
+        //   authBloc.setIsLoading(false);
+        // }
       }
     } on AuthException catch (error) {
       authBloc.setIsLoading(false);
@@ -97,7 +97,7 @@ class LoginButton extends StatelessWidget {
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
     RegExp regex = new RegExp(pattern);
     if (!regex.hasMatch(value))
-      return 'Introduce un correo valido';
+      return 'Enter a valid email';
     else
       return null;
   }

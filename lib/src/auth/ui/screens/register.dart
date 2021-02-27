@@ -15,7 +15,6 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   bool loading = false;
-  bool isChecked = false;
   TextEditingController ctrlName = new TextEditingController();
   TextEditingController ctrlEmail = new TextEditingController();
   TextEditingController ctrlPassword = new TextEditingController();
@@ -64,7 +63,7 @@ class _RegisterState extends State<Register> {
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    Text('Crear Cuenta',
+                    Text('Create Account',
                         style: TextStyle(
                             fontSize: 24, fontWeight: FontWeight.w900)),
                     AuthForm(
@@ -76,34 +75,10 @@ class _RegisterState extends State<Register> {
                         setName: setName,
                         setPassword: setPassword),
                     Container(
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(30),
-                            boxShadow: <BoxShadow>[
-                              BoxShadow(
-                                  color: Colors.black.withOpacity(0.05),
-                                  offset: Offset(0, 5),
-                                  blurRadius: 5),
-                            ]),
-                        margin: EdgeInsets.only(left: 10, right: 10),
-                        child: CheckboxListTile(
-                            activeColor: Colors.red,
-                            title: Text('¡Acepto los términos y condiciones!',
-                                style: TextStyle(
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.bold)),
-                            value: isChecked,
-                            onChanged: (val) {
-                              setState(() {
-                                isChecked = val;
-                              });
-                            })),
-                    Container(
                         margin:
                             EdgeInsets.only(bottom: 20, left: 20, right: 20),
                         child: RegisterButton(
-                            buildErrorDialog: _buildErrorDialog,
-                            isChecked: isChecked)),
+                            buildErrorDialog: _buildErrorDialog)),
                     _loginOption(context),
                   ]),
             ),
@@ -119,8 +94,8 @@ class _RegisterState extends State<Register> {
         },
         child:
             Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-          Text('¿Ya tienes cuenta?'),
-          Text(' Iniciar Sesión',
+          Text('Do you already have an account?'),
+          Text(' Log in',
               style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w700))
         ]));
   }
@@ -133,12 +108,12 @@ class _RegisterState extends State<Register> {
               isInput: false,
               ctrlInput: null,
               typeInput: null,
-              txtTitle: 'Mensaje De Error',
+              txtTitle: 'Error message',
               txtContentInput: (_message ==
                       "PlatformException(ERROR_EMAIL_ALREADY_IN_USE, The email address is already in use by another account., null, null)")
-                  ? "¡La dirección de correo electrónico ya está en uso por otra cuenta!"
+                  ? "The email address is already in use by another account!"
                   : _message,
-              txtPrimaryButton: '¡Entendido!',
+              txtPrimaryButton: 'Ok!',
               txtSecondaryButton: null,
               primaryButton: hideAlertDialog,
               secondaryButton: null);

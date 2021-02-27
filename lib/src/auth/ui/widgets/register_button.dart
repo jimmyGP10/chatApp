@@ -9,9 +9,7 @@ import 'package:http/http.dart' as http;
 
 class RegisterButton extends StatelessWidget {
   final Function buildErrorDialog;
-  final bool isChecked;
-  const RegisterButton(
-      {Key key, @required this.buildErrorDialog, @required this.isChecked})
+  const RegisterButton({Key key, @required this.buildErrorDialog})
       : super(key: key);
 
   @override
@@ -25,42 +23,37 @@ class RegisterButton extends StatelessWidget {
 
   Widget _registerButton(context, data) {
     String url = "https://kiiwik-server.herokuapp.com";
-    final LocalStorage storage = new LocalStorage('KIIWIK-GP-JBS');
+    final LocalStorage storage = new LocalStorage('ChatApp-JF');
     return RaisedButton(
         elevation: 2,
         highlightElevation: 5,
         color: Color.fromRGBO(0, 166, 0, 1),
         shape: StadiumBorder(),
         onPressed: () async {
-          if (isChecked) {
-            if (data['name'] == null ||
-                data['name'] == '' ||
-                data['email'] == null ||
-                data['email'] == '' ||
-                data['password'] == null ||
-                data['password'] == '') {
-              showToast('¡Los campos con (*) son obligatorios!', context,
-                  duration: Toast.LENGTH_LONG, gravity: Toast.CENTER);
-            } else {
-              var emailValidation = validateEmail(data['email']);
-              if (emailValidation == null) {
-                int passwordValidation = data['password'].length;
-                if (passwordValidation < 6) {
-                  showToast('¡La contraseña debe tener al menos 6 caracteres!',
-                      context,
-                      duration: Toast.LENGTH_LONG, gravity: Toast.CENTER);
-                } else {
-                  register(data['email'], data['password'], data['name'], url,
-                      storage, context);
-                }
-              } else {
-                showToast('¡$emailValidation!', context,
-                    duration: Toast.LENGTH_LONG, gravity: Toast.CENTER);
-              }
-            }
-          } else {
-            showToast('¡Debes aceptar los términos y condiciones!', context,
+          if (data['name'] == null ||
+              data['name'] == '' ||
+              data['email'] == null ||
+              data['email'] == '' ||
+              data['password'] == null ||
+              data['password'] == '') {
+            showToast('The fields with (*) are required!', context,
                 duration: Toast.LENGTH_LONG, gravity: Toast.CENTER);
+          } else {
+            var emailValidation = validateEmail(data['email']);
+            if (emailValidation == null) {
+              int passwordValidation = data['password'].length;
+              if (passwordValidation < 6) {
+                showToast(
+                    'The password must be at least 6 characters!', context,
+                    duration: Toast.LENGTH_LONG, gravity: Toast.CENTER);
+              } else {
+                register(data['email'], data['password'], data['name'], url,
+                    context);
+              }
+            } else {
+              showToast('¡$emailValidation!', context,
+                  duration: Toast.LENGTH_LONG, gravity: Toast.CENTER);
+            }
           }
         },
         child: Container(
@@ -91,36 +84,36 @@ class RegisterButton extends StatelessWidget {
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
     RegExp regex = new RegExp(pattern);
     if (!regex.hasMatch(value))
-      return 'Introduce un correo valido';
+      return 'Enter a valid email';
     else
       return null;
   }
 
-  register(email, password, names, url, storage, context) async {
+  register(email, password, names, url, context) async {
     authBloc.setIsLoading(true);
     try {
       AuthResult result =
           await authBloc.createUserWithEmailAndPassword(email, password);
       if (result.user.uid != null) {
-        var response = await http.post(Uri.encodeFull('$url/users/register'),
-            body: convert.json.encode({
-              "displayName": names,
-              "email": email,
-              "photoURL": "",
-              "visible": true,
-              "uid": result.user.uid,
-            }),
-            headers: {'content-type': 'application/json'});
-        print('response.body' + response.body);
-        if (response.statusCode == 200) {
-          var jsonResponse = convert.jsonDecode(response.body);
-          storage.setItem('userAuth', jsonResponse);
-          authBloc.setIsLoading(false);
-          navigation(context);
-        } else {
-          print('Request failed with status: ${response.statusCode}.');
-          authBloc.setIsLoading(false);
-        }
+        // var response = await http.post(Uri.encodeFull('$url/users/register'),
+        //     body: convert.json.encode({
+        //       "displayName": names,
+        //       "email": email,
+        //       "photoURL": "",
+        //       "visible": true,
+        //       "uid": result.user.uid,
+        //     }),
+        //     headers: {'content-type': 'application/json'});
+        // print('response.body' + response.body);
+        // if (response.statusCode == 200) {
+        //   var jsonResponse = convert.jsonDecode(response.body);
+        //   storage.setItem('userAuth', jsonResponse);
+        authBloc.setIsLoading(false);
+        navigation(context);
+        // } else {
+        //   print('Request failed with status: ${response.statusCode}.');
+        //   authBloc.setIsLoading(false);
+        // }
       }
       authBloc.setIsLoading(false);
     } on AuthException catch (error) {

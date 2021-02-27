@@ -48,7 +48,9 @@ class _LoginState extends State<Login> {
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
-                    Container(height: 200, width: 200, child: Text('ChatApp')),
+                    Text('ChatApp',
+                        style: TextStyle(
+                            fontSize: 26, fontWeight: FontWeight.w900)),
                     AuthForm(
                         from: 'login',
                         ctrlEmail: ctrlEmail,
@@ -75,8 +77,8 @@ class _LoginState extends State<Login> {
         },
         child:
             Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-          Text('¿No tienes cuenta?'),
-          Text(' Crear Cuenta',
+          Text('You do not have an account?'),
+          Text(' Create Account',
               style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w700))
         ]));
   }
@@ -90,8 +92,8 @@ class _LoginState extends State<Login> {
               ctrlInput: null,
               typeInput: null,
               txtTitle: null,
-              txtContentInput: "¡El correo o la contraseña son incorrectas!",
-              txtPrimaryButton: '¡Entendido!',
+              txtContentInput: "The email or password is wrong!",
+              txtPrimaryButton: 'Ok!',
               txtSecondaryButton: null,
               primaryButton: hideAlertDialog,
               secondaryButton: null);

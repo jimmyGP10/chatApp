@@ -38,7 +38,7 @@ class _AuthFormState extends State<AuthForm> {
               child: Column(children: [
                 (this.widget.from == 'register')
                     ? textField(
-                        "* Nombres y Apellidos",
+                        "* Names and surnames",
                         Icon(Icons.perm_identity),
                         null,
                         false,
@@ -48,11 +48,11 @@ class _AuthFormState extends State<AuthForm> {
                         snapshot.data)
                     : Container(),
                 SizedBox(height: 15),
-                textField("* Correo", Icon(Icons.mail_outline), null, false,
+                textField("* Email", Icon(Icons.mail_outline), null, false,
                     'email', widget.ctrlEmail, widget.setEmail, snapshot.data),
                 SizedBox(height: 15),
                 textField(
-                    '* Contraseña',
+                    '* Password',
                     Icon(Icons.lock_outline),
                     (_isPasswordHidden == true)
                         ? Icon(Icons.visibility_off, color: Colors.grey)
