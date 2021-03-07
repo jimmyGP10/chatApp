@@ -14,4 +14,6 @@ class AuthRepository {
   Future<AuthResult> createUserWithEmailAndPassword(
           String email, String password) =>
       _firebaseAuthAPI.createUserWithEmailAndPassword(email, password);
+
+  Future<void> signOut() => _firebaseAuthAPI.signOut();
 }

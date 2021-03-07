@@ -12,9 +12,6 @@ class Loading extends StatelessWidget {
         height: MediaQuery.of(context).size.height,
         child: Center(
             child: Stack(children: [
-          Center(
-            child: Container(width: 75, height: 75, child: Text('ChatApp')),
-          ),
           SpinKitDualRing(color: Colors.green, size: 90),
         ])));
   }

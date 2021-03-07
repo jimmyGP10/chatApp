@@ -22,6 +22,14 @@ class _LoginState extends State<Login> {
   String password;
 
   @override
+  void initState() {
+    super.initState();
+    authBloc.setIsLoading(false);
+    Map<String, dynamic> mapProduct = {};
+    authBloc.setUserFormFields(mapProduct);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Stack(children: <Widget>[
       _buildUI(),

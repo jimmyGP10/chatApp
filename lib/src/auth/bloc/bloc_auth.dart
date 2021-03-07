@@ -30,6 +30,10 @@ class AuthBloc implements Bloc {
     return _authRepository.createUserWithEmailAndPassword(email, password);
   }
 
+  Future<void> signOut() {
+    return _authRepository.signOut();
+  }
+
   @override
   void dispose() {
     _userFields.close();

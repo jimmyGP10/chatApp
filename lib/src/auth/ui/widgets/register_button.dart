@@ -7,10 +7,17 @@ import 'package:toast/toast.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 
-class RegisterButton extends StatelessWidget {
+class RegisterButton extends StatefulWidget {
   final Function buildErrorDialog;
   const RegisterButton({Key key, @required this.buildErrorDialog})
       : super(key: key);
+
+  @override
+  _RegisterButtonState createState() => _RegisterButtonState();
+}
+
+class _RegisterButtonState extends State<RegisterButton> {
+  final LocalStorage storage = new LocalStorage('ChatApp-JF');
 
   @override
   Widget build(BuildContext context) {
@@ -22,12 +29,11 @@ class RegisterButton extends StatelessWidget {
   }
 
   Widget _registerButton(context, data) {
-    String url = "https://kiiwik-server.herokuapp.com";
-    final LocalStorage storage = new LocalStorage('ChatApp-JF');
+    String url = "https://chatappjf.herokuapp.com";
     return RaisedButton(
         elevation: 2,
         highlightElevation: 5,
-        color: Color.fromRGBO(0, 166, 0, 1),
+        color: Colors.blue,
         shape: StadiumBorder(),
         onPressed: () async {
           if (data['name'] == null ||
@@ -60,7 +66,7 @@ class RegisterButton extends StatelessWidget {
             width: double.infinity,
             height: 50,
             child: Center(
-                child: Text('Registrar',
+                child: Text('Register',
                     style: TextStyle(color: Colors.white, fontSize: 17)))));
   }
 
@@ -95,33 +101,31 @@ class RegisterButton extends StatelessWidget {
       AuthResult result =
           await authBloc.createUserWithEmailAndPassword(email, password);
       if (result.user.uid != null) {
-        // var response = await http.post(Uri.encodeFull('$url/users/register'),
-        //     body: convert.json.encode({
-        //       "displayName": names,
-        //       "email": email,
-        //       "photoURL": "",
-        //       "visible": true,
-        //       "uid": result.user.uid,
-        //     }),
-        //     headers: {'content-type': 'application/json'});
-        // print('response.body' + response.body);
-        // if (response.statusCode == 200) {
-        //   var jsonResponse = convert.jsonDecode(response.body);
-        //   storage.setItem('userAuth', jsonResponse);
-        authBloc.setIsLoading(false);
-        navigation(context);
-        // } else {
-        //   print('Request failed with status: ${response.statusCode}.');
-        //   authBloc.setIsLoading(false);
-        // }
+        var response = await http.post(Uri.encodeFull('$url/users/add'),
+            body: convert.json.encode({
+              "name": names,
+              "email": email,
+              "uid": result.user.uid,
+            }),
+            headers: {'content-type': 'application/json'});
+        print('response.body' + response.body);
+        if (response.statusCode == 200) {
+          var jsonResponse = convert.jsonDecode(response.body);
+          storage.setItem('userAuth', jsonResponse);
+          authBloc.setIsLoading(false);
+          navigation(context);
+        } else {
+          print('Request failed with status: ${response.statusCode}.');
+          authBloc.setIsLoading(false);
+        }
       }
       authBloc.setIsLoading(false);
     } on AuthException catch (error) {
       authBloc.setIsLoading(false);
-      return buildErrorDialog(context, error.message);
+      return widget.buildErrorDialog(context, error.message);
     } on Exception catch (error) {
       authBloc.setIsLoading(false);
-      return buildErrorDialog(context, error.toString());
+      return widget.buildErrorDialog(context, error.toString());
     }
   }
 }

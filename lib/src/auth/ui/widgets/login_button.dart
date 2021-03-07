@@ -14,7 +14,7 @@ class LoginButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String url = "https://kiiwik-server.herokuapp.com";
+    String url = "https://chatappjf.herokuapp.com";
     final LocalStorage storage = new LocalStorage('ChatApp-JF');
     return StreamBuilder(
         stream: authBloc.getUserFields,
@@ -22,10 +22,11 @@ class LoginButton extends StatelessWidget {
           return RaisedButton(
               elevation: 2,
               highlightElevation: 5,
-              color: Color.fromRGBO(0, 166, 0, 1),
+              color: Colors.blue,
               shape: StadiumBorder(),
               onPressed: () async {
                 var data = snapshot.data;
+                print(data);
                 if (data['email'] == null ||
                     data['email'] == '' ||
                     data['password'] == null ||
@@ -59,21 +60,21 @@ class LoginButton extends StatelessWidget {
       AuthResult result =
           await authBloc.signInWithEmailAndPassword(email, password);
       if (result.user.uid != null) {
-        // var response = await http
-        //     .get(Uri.encodeFull('$url/users/ByUid/${result.user.uid}'));
-        // if (response.statusCode == 200) {
-        // var jsonResponse = convert.jsonDecode(response.body);
-        // print(jsonResponse);
-        // storage.setItem('userAuth', jsonResponse);
-        Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => SessionHandler()),
-            (Route<dynamic> route) => false);
-        authBloc.setIsLoading(false);
-        // } else {
-        //   print('Request failed with status: ${response.statusCode}.');
-        //   authBloc.setIsLoading(false);
-        // }
+        var response = await http
+            .get(Uri.encodeFull('$url/users/ByUid/${result.user.uid}'));
+        if (response.statusCode == 200) {
+          var jsonResponse = convert.jsonDecode(response.body);
+          print(jsonResponse);
+          storage.setItem('userAuth', jsonResponse);
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => SessionHandler()),
+              (Route<dynamic> route) => false);
+          authBloc.setIsLoading(false);
+        } else {
+          print('Request failed with status: ${response.statusCode}.');
+          authBloc.setIsLoading(false);
+        }
       }
     } on AuthException catch (error) {
       authBloc.setIsLoading(false);
